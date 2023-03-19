@@ -1,5 +1,6 @@
 package com.ehizman.inventorymgt.controllerAdvice;
 
+import com.ehizman.inventorymgt.exception.ProductNotFoundException;
 import org.springframework.dao.DuplicateKeyException;
 import com.mongodb.MongoWriteException;
 import jakarta.validation.ConstraintViolation;
@@ -101,10 +102,18 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         logger.info(ex.getClass().getName());
         final String name = ex.getMessage().substring(ex.getMessage().indexOf("name: ")+7, ex.getMessage().indexOf("}")-2);
 
-        final ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "A Product already exists with name "+ name, "Product Name Already Exists");
+        final ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "A Product already exists with name "+ name, "Duplicate Product Error");
         ResponseEntity<Object> response = new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
         logger.info("response --> " + response);
 
+        return response;
+    }
+
+    @ExceptionHandler({ProductNotFoundException.class})
+    public ResponseEntity<Object> handleProductNotFoundException(final Exception ex, final WebRequest request){
+        final ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), "Product Not Found Error");
+        ResponseEntity<Object> response = new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+        logger.info("Response --> " + response);
         return response;
     }
 
@@ -150,7 +159,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     }
     // 500
 
-    @org.springframework.web.bind.annotation.ExceptionHandler({ Exception.class })
+    @ExceptionHandler({ Exception.class })
     public ResponseEntity<Object> handleAll(final Exception ex, final WebRequest request) {
         logger.info(ex.getClass().getName());
         logger.error("error", ex);

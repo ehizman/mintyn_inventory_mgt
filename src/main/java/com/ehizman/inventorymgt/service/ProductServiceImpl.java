@@ -1,9 +1,11 @@
 package com.ehizman.inventorymgt.service;
 
 import com.ehizman.inventorymgt.dto.ProductDto;
+import com.ehizman.inventorymgt.exception.ProductNotFoundException;
 import com.ehizman.inventorymgt.model.Product;
 import com.ehizman.inventorymgt.repository.ProductRepository;
 import com.ehizman.inventorymgt.ui.model.CreateProductRequestModel;
+import com.ehizman.inventorymgt.ui.model.UpdateProductRequestModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,5 +45,15 @@ public class ProductServiceImpl implements ProductService{
         Pageable pageable = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(pageSize));
         Page<Product> products =  productRepository.findAll(pageable);
         return products.map(product -> modelMapper.map(product, ProductDto.class));
+    }
+
+    @Override
+    public ProductDto updateProduct(String productId, UpdateProductRequestModel updateProductRequestModel) {
+        Product product = productRepository.findProductByProductId(productId).orElseThrow(() -> new ProductNotFoundException("Product: "+ productId));
+        product.setDescription(updateProductRequestModel.getDescription());
+        product.setProductPriceInKobo(BigDecimal.valueOf(updateProductRequestModel.getPrice()*100));
+        product.setName(updateProductRequestModel.getProductName());
+        product.setStockLevel(updateProductRequestModel.getStockLevel());
+        return modelMapper.map(productRepository.save(product), ProductDto.class);
     }
 }

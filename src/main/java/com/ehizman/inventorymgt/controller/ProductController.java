@@ -3,7 +3,9 @@ package com.ehizman.inventorymgt.controller;
 import com.ehizman.inventorymgt.dto.ProductDto;
 import com.ehizman.inventorymgt.service.ProductService;
 import com.ehizman.inventorymgt.ui.model.CreateProductRequestModel;
+import com.ehizman.inventorymgt.ui.model.UpdateProductRequestModel;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,8 +23,8 @@ public class ProductController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createProduct(@RequestBody @Valid CreateProductRequestModel productRequestModel){
-        ProductDto productDto = productService.createProduct(productRequestModel);
+    public ResponseEntity<?> createProduct(@RequestBody @Valid @NotNull CreateProductRequestModel createProductRequestModel){
+        ProductDto productDto = productService.createProduct(createProductRequestModel);
         return new ResponseEntity<>(productDto, HttpStatus.CREATED);
     }
     @GetMapping(produces = { "application/hal+json" })
@@ -33,4 +35,9 @@ public class ProductController {
         return new ResponseEntity<>(productDtoPage, HttpStatus.OK);
     }
 
+    @PatchMapping()
+    public ResponseEntity<?> updateProduct(@RequestParam(name = "productId") String productId, @RequestBody @Valid @NotNull UpdateProductRequestModel updateProductRequestModel){
+        ProductDto productDto = productService.updateProduct(productId, updateProductRequestModel);
+        return new ResponseEntity<>(productDto, HttpStatus.OK);
+    }
 }
