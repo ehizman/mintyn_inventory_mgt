@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Document(collection = "products")
 public class Product {
@@ -27,12 +28,18 @@ public class Product {
     @PositiveOrZero(message = "product price cannot be negative")
     private BigDecimal productPriceInKobo;
 
+    @NotNull(message = "creation time cannot be null")
+    private LocalDateTime creationTime;
+
+    private LocalDateTime updateTime;
+
     public Product(String productId, int stockLevel, String name, BigDecimal productPriceInKobo, String description) {
         this.productId = productId;
         this.stockLevel = stockLevel;
         this.name = name;
         this.productPriceInKobo = productPriceInKobo;
         this.description = description;
+        this.creationTime = LocalDateTime.now();
     }
 
     public String getProductId() {
@@ -89,5 +96,21 @@ public class Product {
 
     public void setProductPriceInKobo(BigDecimal productPriceInKobo) {
         this.productPriceInKobo = productPriceInKobo;
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 }

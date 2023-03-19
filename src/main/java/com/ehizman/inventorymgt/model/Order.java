@@ -1,9 +1,11 @@
 package com.ehizman.inventorymgt.model;
 
+import liquibase.ContextExpression;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,9 +17,9 @@ public class Order {
     private OrderStatus orderStatus;
     private final String orderId;
     private final Set<OrderItem> orderItems;
+    private final LocalDateTime creationTime;
     private final String customerName;
     private final String customerPhoneNumber;
-
     private BigDecimal value;
 
     public Order(OrderStatus orderStatus, String orderId, String customerName, String customerPhoneNumber) {
@@ -25,7 +27,9 @@ public class Order {
         this.orderId = orderId;
         this.customerName = customerName;
         this.customerPhoneNumber = customerPhoneNumber;
+        this.creationTime = LocalDateTime.now();
         this.orderItems = new HashSet<>();
+        this.value = new BigDecimal(0);
     }
 
     public OrderStatus getOrderStatus() {
@@ -56,7 +60,12 @@ public class Order {
         return value;
     }
 
-    public void addToOrderValue(BigDecimal valueOfOrderItem){
-        this.value = this.value.add(valueOfOrderItem);
+    public void addItemToOrder(OrderItem orderItem){
+        this.orderItems.add(orderItem);
+        this.value = value.add(orderItem.getValue());
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
     }
 }

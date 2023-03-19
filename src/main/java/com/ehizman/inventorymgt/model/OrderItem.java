@@ -1,8 +1,20 @@
 package com.ehizman.inventorymgt.model;
 
+import jakarta.validation.constraints.Min;
+
+import java.math.BigDecimal;
+
 public class OrderItem {
+    @Min(1)
     private int quantity;
     private String productId;
+
+    public OrderItem(int quantity, String productId) {
+        this.quantity = quantity;
+        this.productId = productId;
+    }
+
+    private BigDecimal value;
 
     public int getQuantity() {
         return quantity;
@@ -26,5 +38,13 @@ public class OrderItem {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    public void setValue(BigDecimal value) {
+        this.value = value;
     }
 }

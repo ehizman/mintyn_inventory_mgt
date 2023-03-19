@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -49,11 +50,17 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ProductDto updateProduct(String productId, UpdateProductRequestModel updateProductRequestModel) {
-        Product product = productRepository.findProductByProductId(productId).orElseThrow(() -> new ProductNotFoundException("Product: "+ productId));
+        Product product = productRepository.findProductByProductId(productId).orElseThrow(() -> new ProductNotFoundException("Product: "+ productId + " not found"));
         product.setDescription(updateProductRequestModel.getDescription());
         product.setProductPriceInKobo(BigDecimal.valueOf(updateProductRequestModel.getPrice()*100));
         product.setName(updateProductRequestModel.getProductName());
         product.setStockLevel(updateProductRequestModel.getStockLevel());
+        product.setUpdateTime(LocalDateTime.now());
         return modelMapper.map(productRepository.save(product), ProductDto.class);
+    }
+
+    @Override
+    public Product findProductById(String productId) {
+        return productRepository.findProductByProductId(productId).orElseThrow(() -> new ProductNotFoundException("Product: " + productId + " not found"));
     }
 }
