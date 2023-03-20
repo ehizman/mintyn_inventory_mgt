@@ -1,5 +1,6 @@
 package com.ehizman.inventorymgt.controller;
 
+import com.ehizman.inventorymgt.dto.OrderCreationResponse;
 import com.ehizman.inventorymgt.dto.OrderEntityDto;
 import com.ehizman.inventorymgt.service.OrderService;
 import com.ehizman.inventorymgt.ui.model.CreateOrderRequestModel;
@@ -23,7 +24,7 @@ public class OrderController {
 
     @PostMapping()
     public ResponseEntity<?> createOrder(@NotNull @Valid @RequestBody CreateOrderRequestModel createOrderRequestModel){
-        OrderEntityDto orderEntityDto = orderService.createOrder(createOrderRequestModel);
-        return new ResponseEntity<>(orderEntityDto, HttpStatus.CREATED);
+        OrderCreationResponse orderCreationResponse = orderService.createOrder(createOrderRequestModel);
+        return new ResponseEntity<>(orderCreationResponse, HttpStatus.CREATED);
     }
 }

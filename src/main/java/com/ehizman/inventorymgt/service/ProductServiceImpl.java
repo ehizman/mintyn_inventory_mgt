@@ -58,9 +58,4 @@ public class ProductServiceImpl implements ProductService{
         product.setUpdateTime(LocalDateTime.now());
         return modelMapper.map(productRepository.save(product), ProductDto.class);
     }
-
-    @Override
-    public Product findProductById(String productId) {
-        return productRepository.findProductByProductId(productId).orElseThrow(() -> new ProductNotFoundException("Product: " + productId + " not found"));
-    }
 }

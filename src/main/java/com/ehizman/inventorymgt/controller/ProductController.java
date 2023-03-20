@@ -12,6 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/products")
 @Slf4j
@@ -38,6 +42,9 @@ public class ProductController {
     @PatchMapping()
     public ResponseEntity<?> updateProduct(@RequestParam(name = "productId") String productId, @RequestBody @Valid @NotNull UpdateProductRequestModel updateProductRequestModel){
         ProductDto productDto = productService.updateProduct(productId, updateProductRequestModel);
-        return new ResponseEntity<>(productDto, HttpStatus.OK);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Product " + productId+ " update successfully");
+        response.put("data", productDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

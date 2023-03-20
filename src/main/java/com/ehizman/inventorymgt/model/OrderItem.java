@@ -14,6 +14,10 @@ public class OrderItem {
         this.productId = productId;
     }
 
+    public OrderItem() {
+
+    }
+
     private BigDecimal value;
 
     public int getQuantity() {
@@ -46,5 +50,15 @@ public class OrderItem {
 
     public void setValue(BigDecimal value) {
         this.value = value;
+    }
+
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "quantity=" + quantity +
+                ", productId='" + productId + '\'' +
+                ", value=" + value +
+                '}';
     }
 }

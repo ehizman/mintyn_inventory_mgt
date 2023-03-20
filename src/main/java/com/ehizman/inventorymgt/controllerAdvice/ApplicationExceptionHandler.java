@@ -1,5 +1,6 @@
 package com.ehizman.inventorymgt.controllerAdvice;
 
+import com.ehizman.inventorymgt.exception.OutOfStockException;
 import com.ehizman.inventorymgt.exception.ProductNotFoundException;
 import org.springframework.dao.DuplicateKeyException;
 import com.mongodb.MongoWriteException;
@@ -109,9 +110,14 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         return response;
     }
 
-    @ExceptionHandler({ProductNotFoundException.class})
+    @ExceptionHandler({ProductNotFoundException.class, OutOfStockException.class})
     public ResponseEntity<Object> handleProductNotFoundException(final Exception ex, final WebRequest request){
-        final ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), "Product Not Found Error");
+        final ApiError apiError;
+        if (ex.getClass().isInstance(OutOfStockException.class)){
+            apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), "Product Out Of Stock Error");
+        } else {
+            apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), "Product Not Found Error");
+        }
         ResponseEntity<Object> response = new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
         logger.info("Response --> " + response);
         return response;

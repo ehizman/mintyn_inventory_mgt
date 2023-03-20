@@ -15,21 +15,33 @@ public class Order {
     private String id;
 
     private OrderStatus orderStatus;
-    private final String orderId;
-    private final Set<OrderItem> orderItems;
-    private final LocalDateTime creationTime;
-    private final String customerName;
-    private final String customerPhoneNumber;
-    private BigDecimal value;
+    private String orderId;
+    private Set<OrderItem> orderItems;
+    private LocalDateTime creationTime;
+    private String customerName;
+    private String customerPhoneNumber;
+    private BigDecimal totalValue;
 
-    public Order(OrderStatus orderStatus, String orderId, String customerName, String customerPhoneNumber) {
+    public Order(OrderStatus orderStatus, String orderId, String customerName, String customerPhoneNumber, Set<OrderItem> orderItems, LocalDateTime orderCreationTime) {
         this.orderStatus = orderStatus;
         this.orderId = orderId;
         this.customerName = customerName;
         this.customerPhoneNumber = customerPhoneNumber;
         this.creationTime = LocalDateTime.now();
-        this.orderItems = new HashSet<>();
-        this.value = new BigDecimal(0);
+        this.orderItems = orderItems;
+        this.totalValue = new BigDecimal(0);
+        this.creationTime = orderCreationTime;
+    }
+
+    public Order() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public OrderStatus getOrderStatus() {
@@ -56,16 +68,34 @@ public class Order {
         return customerPhoneNumber;
     }
 
-    public BigDecimal getValue() {
-        return value;
+    public BigDecimal getTotalValue() {
+        return totalValue;
     }
 
     public void addItemToOrder(OrderItem orderItem){
         this.orderItems.add(orderItem);
-        this.value = value.add(orderItem.getValue());
+        this.totalValue = totalValue.add(orderItem.getValue());
     }
 
     public LocalDateTime getCreationTime() {
         return creationTime;
+    }
+
+    public void setTotalValue(BigDecimal orderTotalValue) {
+        this.totalValue = orderTotalValue;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id='" + id + '\'' +
+                ", orderStatus=" + orderStatus +
+                ", orderId='" + orderId + '\'' +
+                ", orderItems=" + orderItems +
+                ", creationTime=" + creationTime +
+                ", customerName='" + customerName + '\'' +
+                ", customerPhoneNumber='" + customerPhoneNumber + '\'' +
+                ", totalValue=" + totalValue +
+                '}';
     }
 }
