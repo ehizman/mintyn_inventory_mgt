@@ -1,14 +1,11 @@
 package com.ehizman.inventorymgt.service;
 
 import com.ehizman.inventorymgt.dto.OrderCreationResponse;
-import com.ehizman.inventorymgt.exception.InventoryMgtApplicationException;
 import com.ehizman.inventorymgt.kafka.KakfaPendingOrderSender;
-import com.ehizman.inventorymgt.dto.OrderEntityDto;
 import com.ehizman.inventorymgt.model.Order;
 import com.ehizman.inventorymgt.model.OrderStatus;
 import com.ehizman.inventorymgt.repository.OrderRepository;
 import com.ehizman.inventorymgt.ui.model.CreateOrderRequestModel;
-import org.modelmapper.ModelMapper;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +18,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public class OrderServiceImpl implements OrderService{
     private final OrderRepository orderRepository;
     private final KakfaPendingOrderSender kakfaPendingOrderSender;
-    private final ModelMapper modelMapper;
 
-    public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper, KakfaPendingOrderSender kafkaPendingOrderSender) {
+    public OrderServiceImpl(OrderRepository orderRepository, KakfaPendingOrderSender kafkaPendingOrderSender) {
         this.orderRepository = orderRepository;
-        this.modelMapper = modelMapper;
         this.kakfaPendingOrderSender = kafkaPendingOrderSender;
     }
 
@@ -56,7 +51,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public void saveOrder(Order order) {
-        orderRepository.save(order);
+    public Order saveOrder(Order order) {
+        return orderRepository.save(order);
     }
 }

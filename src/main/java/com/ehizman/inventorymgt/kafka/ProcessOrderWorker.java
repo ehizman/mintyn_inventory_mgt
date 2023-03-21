@@ -2,7 +2,6 @@ package com.ehizman.inventorymgt.kafka;
 
 import com.ehizman.inventorymgt.model.Order;
 import com.ehizman.inventorymgt.model.OrderStatus;
-import com.ehizman.inventorymgt.repository.OrderRepository;
 import com.ehizman.inventorymgt.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

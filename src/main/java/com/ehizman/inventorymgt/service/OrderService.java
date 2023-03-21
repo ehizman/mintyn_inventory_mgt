@@ -6,5 +6,5 @@ import com.ehizman.inventorymgt.ui.model.CreateOrderRequestModel;
 
 public interface OrderService {
     OrderCreationResponse createOrder(CreateOrderRequestModel createOrderRequestModel);
-    void saveOrder(Order order);
+    Order saveOrder(Order order);
 }

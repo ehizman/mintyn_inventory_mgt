@@ -48,6 +48,7 @@ public class KafkaConsumerConfig {
         factory.setConsumerFactory(userConsumerFactory());
         DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(kafkaTemplate, (record, ex) -> new TopicPartition("dead-orders", record.partition()));
         factory.setCommonErrorHandler(new DefaultErrorHandler(recoverer, new FixedBackOff(1000L, 2L)));
+        factory.setReplyTemplate(kafkaTemplate);
         return factory;
     }
 }

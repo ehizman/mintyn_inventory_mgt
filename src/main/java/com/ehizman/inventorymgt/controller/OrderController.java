@@ -1,7 +1,6 @@
 package com.ehizman.inventorymgt.controller;
 
 import com.ehizman.inventorymgt.dto.OrderCreationResponse;
-import com.ehizman.inventorymgt.dto.OrderEntityDto;
 import com.ehizman.inventorymgt.service.OrderService;
 import com.ehizman.inventorymgt.ui.model.CreateOrderRequestModel;
 import jakarta.validation.Valid;

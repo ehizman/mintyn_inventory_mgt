@@ -27,7 +27,6 @@ public class Order {
         this.orderId = orderId;
         this.customerName = customerName;
         this.customerPhoneNumber = customerPhoneNumber;
-        this.creationTime = LocalDateTime.now();
         this.orderItems = orderItems;
         this.totalValue = new BigDecimal(0);
         this.creationTime = orderCreationTime;
