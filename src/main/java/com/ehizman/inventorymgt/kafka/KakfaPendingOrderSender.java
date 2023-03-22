@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -32,6 +34,8 @@ public class KakfaPendingOrderSender {
     @Transactional
     public void sendMessage(Order order, String topicName) {
         BigDecimal orderTotalValue = new BigDecimal(0);
+        List<Product> productsToUpdate = new ArrayList<>();
+
         for (OrderItem orderItem: order.getOrderItems()) {
             Product product = productRepository.findProductByProductId(orderItem.getProductId()).orElseThrow(
                     () -> new ProductNotFoundException("Product: " + orderItem.getProductId() + " not found")
@@ -42,11 +46,12 @@ public class KakfaPendingOrderSender {
                 throw new OutOfStockException("product: " + product.getProductId() + " is out of stock");
             }
             product.setStockLevel(product.getStockLevel() - orderItem.getQuantity());
-            productRepository.save(product);
+            productsToUpdate.add(product);
 
             orderItem.setValue(product.getProductPriceInKobo().multiply(BigDecimal.valueOf(orderItem.getQuantity())));
             orderTotalValue = orderTotalValue.add(orderItem.getValue());
         }
+        productRepository.saveAll(productsToUpdate);
         order.setTotalValue(orderTotalValue);
         Gson gson = GsonFactory.getGsonObject();
         log.info("Json from producer --> {}", gson.toJson(order));
