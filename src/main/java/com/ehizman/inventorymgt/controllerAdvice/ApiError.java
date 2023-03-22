@@ -4,7 +4,6 @@ import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 @ToString
 public class ApiError implements Serializable {

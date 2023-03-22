@@ -1,20 +1,28 @@
 package com.ehizman.inventorymgt.dto;
 
-import com.ehizman.inventorymgt.model.OrderStatus;
+
 
 import java.time.LocalDateTime;
 
 public class OrderCreationResponse {
-    private OrderStatus orderStatus;
     private LocalDateTime creationTime;
-    private String orderId;
+    private String message;
 
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
+    public static OrderCreationResponse builder(){
+        return new OrderCreationResponse();
+    }
+    public OrderCreationResponse creationTime(LocalDateTime creationTime){
+        this.creationTime = creationTime;
+        return this;
     }
 
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
+    public OrderCreationResponse message(String message){
+        this.message = message;
+        return this;
+    }
+
+    public OrderCreationResponse build(){
+        return this;
     }
 
     public LocalDateTime getCreationTime() {
@@ -25,20 +33,19 @@ public class OrderCreationResponse {
         this.creationTime = creationTime;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getMessage() {
+        return message;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
     public String toString() {
         return "OrderCreationResponse{" +
-                "orderStatus=" + orderStatus +
                 ", creationTime=" + creationTime +
-                ", orderId='" + orderId + '\'' +
+                ", message=" + message +
                 '}';
     }
 }

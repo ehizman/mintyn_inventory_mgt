@@ -3,6 +3,7 @@ package com.ehizman.inventorymgt.controller;
 import com.ehizman.inventorymgt.dto.OrderCreationResponse;
 import com.ehizman.inventorymgt.service.OrderService;
 import com.ehizman.inventorymgt.ui.model.CreateOrderRequestModel;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class OrderController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createOrder(@NotNull @Valid @RequestBody CreateOrderRequestModel createOrderRequestModel){
+    public ResponseEntity<?> createOrder(@NotNull @Valid @RequestBody CreateOrderRequestModel createOrderRequestModel) throws JsonProcessingException {
         OrderCreationResponse orderCreationResponse = orderService.createOrder(createOrderRequestModel);
         return new ResponseEntity<>(orderCreationResponse, HttpStatus.CREATED);
     }

@@ -6,15 +6,15 @@ import com.ehizman.inventorymgt.model.Order;
 import com.ehizman.inventorymgt.model.OrderStatus;
 import com.ehizman.inventorymgt.repository.OrderRepository;
 import com.ehizman.inventorymgt.ui.model.CreateOrderRequestModel;
-import org.springframework.kafka.support.SendResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService{
     private final OrderRepository orderRepository;
     private final KakfaPendingOrderSender kakfaPendingOrderSender;
@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public OrderCreationResponse createOrder(CreateOrderRequestModel createOrderRequestModel) {
+    public OrderCreationResponse createOrder(CreateOrderRequestModel createOrderRequestModel) throws JsonProcessingException {
         String orderId = UUID.randomUUID().toString();
         LocalDateTime orderCreationTime = LocalDateTime.now();
         Order order = new Order(
@@ -37,17 +37,14 @@ public class OrderServiceImpl implements OrderService{
                 orderCreationTime
         );
         Order savedOrder = orderRepository.save(order);
-        AtomicReference<OrderCreationResponse> orderCreationResponseAtomicReference = new AtomicReference<>();
-        CompletableFuture<SendResult<String, Order>> future = kakfaPendingOrderSender.sendMessage(savedOrder, "process");
-        future.whenComplete((result, ex) -> {
-            if (ex == null) {
-                OrderCreationResponse orderCreationResponse = orderCreationResponseAtomicReference.get();
-                orderCreationResponse.setOrderId(savedOrder.getOrderId());
-                orderCreationResponse.setOrderStatus(OrderStatus.SUCCESSFUL);
-                orderCreationResponse.setCreationTime(orderCreationTime);
-            }
-        });
-        return orderCreationResponseAtomicReference.get();
+        kakfaPendingOrderSender.sendMessage(savedOrder, "process");
+        OrderCreationResponse orderCreationResponse = OrderCreationResponse.builder()
+                .creationTime(LocalDateTime.now())
+                .message("Order created successfully")
+                .build();
+
+        log.info("{}", orderCreationResponse);
+        return orderCreationResponse;
     }
 
     @Override

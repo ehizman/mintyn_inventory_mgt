@@ -1,12 +1,15 @@
 package com.ehizman.inventorymgt.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 
 import java.math.BigDecimal;
 
 public class OrderItem {
     @Min(1)
+    @JsonProperty("quantity")
     private int quantity;
+    @JsonProperty("productId")
     private String productId;
 
     public OrderItem(int quantity, String productId) {
@@ -17,7 +20,7 @@ public class OrderItem {
     public OrderItem() {
 
     }
-
+    @JsonProperty("value")
     private BigDecimal value;
 
     public int getQuantity() {
