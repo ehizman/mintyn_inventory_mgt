@@ -14,7 +14,7 @@ ________________________________________________________________________________
 ## Running the Project
 ________________________________________________________________________________________________________________________________________________________
 
--  Find the`docker-compose.yml` file is the root directory. The file contains commands that pull public images of Kafka and ZooKeeper.
+-  Find the `docker-compose.yml` file is the root directory. The file contains commands that pull public images of Kafka and ZooKeeper.
 The file configures Kafka to run on `localhost:29029`.
 
 
