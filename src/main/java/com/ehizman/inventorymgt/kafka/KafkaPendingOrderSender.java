@@ -6,7 +6,6 @@ import com.ehizman.inventorymgt.model.*;
 import com.ehizman.inventorymgt.repository.OrderRepository;
 import com.ehizman.inventorymgt.repository.ProductRepository;
 import com.ehizman.inventorymgt.util.GsonFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -19,12 +18,12 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class KakfaPendingOrderSender {
+public class KafkaPendingOrderSender {
     private final KafkaTemplate<String, String> orderKafkaTemplate;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
 
-    public KakfaPendingOrderSender(KafkaTemplate<String, String> orderKafkaTemplate, ProductRepository productRepository, OrderRepository orderRepository) {
+    public KafkaPendingOrderSender(KafkaTemplate<String, String> orderKafkaTemplate, ProductRepository productRepository, OrderRepository orderRepository) {
         this.orderKafkaTemplate = orderKafkaTemplate;
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
@@ -54,7 +53,6 @@ public class KakfaPendingOrderSender {
         productRepository.saveAll(productsToUpdate);
         order.setTotalValue(orderTotalValue);
         Gson gson = GsonFactory.getGsonObject();
-        log.info("Json from producer --> {}", gson.toJson(order));
         orderKafkaTemplate.send(topicName, order.getOrderId() , gson.toJson(order));
     }
 }

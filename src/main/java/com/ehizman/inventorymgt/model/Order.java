@@ -3,6 +3,7 @@ package com.ehizman.inventorymgt.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -12,6 +13,9 @@ import java.util.Set;
 
 @Document(collection = "orders")
 public class Order {
+
+    @Version
+    private final int version = 0;
     @Id
     @JsonProperty("id")
     private String id;

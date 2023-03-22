@@ -2,9 +2,8 @@ package com.ehizman.inventorymgt.unit_tests;
 
 import com.ehizman.inventorymgt.CreateOrderRequestTestModelFactory;
 import com.ehizman.inventorymgt.dto.OrderCreationResponse;
-import com.ehizman.inventorymgt.kafka.KakfaPendingOrderSender;
+import com.ehizman.inventorymgt.kafka.KafkaPendingOrderSender;
 import com.ehizman.inventorymgt.model.Order;
-import com.ehizman.inventorymgt.model.OrderItem;
 import com.ehizman.inventorymgt.model.OrderStatus;
 import com.ehizman.inventorymgt.repository.OrderRepository;
 import com.ehizman.inventorymgt.service.OrderService;
@@ -35,13 +34,13 @@ public class OrderServiceTests {
     @Mock
     private OrderRepository orderRepository;
     @Mock
-    private KakfaPendingOrderSender kakfaPendingOrderSender;
+    private KafkaPendingOrderSender kafkaPendingOrderSender;
     @Captor
     private ArgumentCaptor<Order> orderArgumentCaptor;
 
     @BeforeEach
     void setup(){
-        orderService = new OrderServiceImpl(orderRepository, kakfaPendingOrderSender);
+        orderService = new OrderServiceImpl(orderRepository, kafkaPendingOrderSender);
     }
 
     @Test
@@ -62,7 +61,7 @@ public class OrderServiceTests {
             )
         );
         OrderCreationResponse response = orderService.createOrder(requestModel);
-        verify(kakfaPendingOrderSender, times(1)).sendMessage(orderArgumentCaptor.capture(), eq("process"));
+        verify(kafkaPendingOrderSender, times(1)).sendMessage(orderArgumentCaptor.capture(), eq("process"));
 
         Order capturedOrder = orderArgumentCaptor.getValue();
         assertThat(capturedOrder.getId()).isEqualTo("id");

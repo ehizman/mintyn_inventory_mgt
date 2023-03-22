@@ -1,7 +1,7 @@
 package com.ehizman.inventorymgt.service;
 
 import com.ehizman.inventorymgt.dto.OrderCreationResponse;
-import com.ehizman.inventorymgt.kafka.KakfaPendingOrderSender;
+import com.ehizman.inventorymgt.kafka.KafkaPendingOrderSender;
 import com.ehizman.inventorymgt.model.Order;
 import com.ehizman.inventorymgt.model.OrderStatus;
 import com.ehizman.inventorymgt.repository.OrderRepository;
@@ -16,9 +16,9 @@ import java.util.UUID;
 @Slf4j
 public class OrderServiceImpl implements OrderService{
     private final OrderRepository orderRepository;
-    private final KakfaPendingOrderSender kakfaPendingOrderSender;
+    private final KafkaPendingOrderSender kakfaPendingOrderSender;
 
-    public OrderServiceImpl(OrderRepository orderRepository, KakfaPendingOrderSender kafkaPendingOrderSender) {
+    public OrderServiceImpl(OrderRepository orderRepository, KafkaPendingOrderSender kafkaPendingOrderSender) {
         this.orderRepository = orderRepository;
         this.kakfaPendingOrderSender = kafkaPendingOrderSender;
     }
