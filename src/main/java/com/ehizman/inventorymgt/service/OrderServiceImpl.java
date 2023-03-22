@@ -6,7 +6,6 @@ import com.ehizman.inventorymgt.model.Order;
 import com.ehizman.inventorymgt.model.OrderStatus;
 import com.ehizman.inventorymgt.repository.OrderRepository;
 import com.ehizman.inventorymgt.ui.model.CreateOrderRequestModel;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public OrderCreationResponse createOrder(CreateOrderRequestModel createOrderRequestModel) throws JsonProcessingException {
+    public OrderCreationResponse createOrder(CreateOrderRequestModel createOrderRequestModel){
         String orderId = UUID.randomUUID().toString();
         LocalDateTime orderCreationTime = LocalDateTime.now();
         Order order = new Order(
