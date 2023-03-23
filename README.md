@@ -1,4 +1,4 @@
-# Mintyn Assessment
+# Inventory Management App
 ## Task 1
 ________________________________________________________________________________________________________________________________________________________
 
@@ -9,6 +9,7 @@ ________________________________________________________________________________
 2. [MongoDB](https://www.mongodb.com/)
 3. [Apache Maven 3.6.3](https://maven.apache.org/)
 4. [Java 17](https://sdkman.io/jdks) (I highly recommend install Java 17 and Maven from SDKMAN)
+5. [Liquibase](https://www.liquibase.org/)- for database migrations
 
 
 ## Running the Project
