@@ -31,7 +31,7 @@ public class ProcessOrderWorker {
             topics = "process",
             containerFactory = "orderKafkaListenerContainerFactory",
             groupId = "inventory-app")
-    void listener(ConsumerRecord<String, String> record) {
+    public void listener(ConsumerRecord<String, String> record) {
         Order order = OrderFactory.fromJson(record.value());
 
         log.info("CustomOrderListener [{}]", order);

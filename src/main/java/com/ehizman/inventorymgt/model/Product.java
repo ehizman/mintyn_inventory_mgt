@@ -2,7 +2,6 @@ package com.ehizman.inventorymgt.model;
 
 import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,8 +10,6 @@ import java.time.LocalDateTime;
 
 @Document(collection = "products")
 public class Product {
-    @Version
-    private final int version = 0;
     @Id
     private String id;
     @NotNull(message = "product id cannot be null")

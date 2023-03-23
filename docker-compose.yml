@@ -24,34 +24,34 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
 
-  mongo:
-    image: 'mongo:latest'
-    ports:
-      - '27017:27017'
-    volumes:
-      - 'mongo-data:/data/db'
-    networks:
-      - mongo-net
-  inventory_mgt_app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '8090:8089'
-    environment:
-      - PROFILE=docker
-    depends_on:
-      - kafka
-      - mongo
-    networks:
-      - kafka-net
-      - mongo-net
+#  mongo:
+#    image: 'mongo:latest'
+#    ports:
+#      - '27017:27017'
+#    volumes:
+#      - 'mongo-data:/data/db'
+#    networks:
+#      - mongo-net
+#  inventory_mgt_app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+#      - '8090:8089'
+#    environment:
+#      - PROFILE=docker
+#    depends_on:
+#      - kafka
+#      - mongo
+#    networks:
+#      - kafka-net
+#      - mongo-net
 
-networks:
-  kafka-net:
-    driver: bridge
-  mongo-net:
-    driver: bridge
-
-volumes:
-  mongo-data:
+#networks:
+#  kafka-net:
+#    driver: bridge
+#  mongo-net:
+#    driver: bridge
+#
+#volumes:
+#  mongo-data:
